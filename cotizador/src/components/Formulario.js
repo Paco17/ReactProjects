@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import styled from '@emotion/styled'
 
 const Campo = styled.div `
@@ -28,7 +28,7 @@ const InputRadio = styled.input `
 `;
 
 const Boton = styled.button `
-    background-color: #bf930d;
+    background-color: #75C5F1;
     font-size: 20px;
     width: 100%;
     height: 3rem;
@@ -36,16 +36,76 @@ const Boton = styled.button `
     font-weight: 100;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     border-radius: 10px;
+    transition: background-color .3s ease;
    
-    
+    &:hover{
+        background-color: #45A8DF;
+        cursor: pointer;
+    }
+`;
+
+const Error = styled.div `
+    background-color: #F45451;
+    width: 95%;
+    padding: 1rem;
+    color: white;
+    margin-bottom: 1.5rem;
+    text-align: center;
+    border-radius: 10px;
+    font-style:italic;
+    font-weight: 550;
+
 `;
 
 const Formulario = () => {
+
+    //Error
+    const [error, guardarError] = useState(false);
+    
+    //Creando los diferentes campos de este formulario
+    const [datos, guardarDatos] = useState({
+        marca: '',
+        year: '',
+        nuevo: 'Nuevo',
+        asegurado: 'Si'
+    });
+
+    //Extraer los valores del State
+    const {marca, year, nuevo, asegurado} = datos;
+
+    //Leer los datos del Formulario y colocarlos en el State
+    const onbtenerInfo = e => {
+        guardarDatos({
+            ...datos,
+            [e.target.name] : e.target.value
+        })
+    }
+
+    const facturar = e => {
+        e.preventDefault();
+        
+        if(marca.trim() === '' || year.trim() === '' || 
+           nuevo.trim() === '' || asegurado.trim() === ''){
+               guardarError(true);
+               return;
+           }
+
+           guardarError(false);
+    }
+
     return(
-        <form>
+        <form
+            onSubmit={facturar}
+        >
+            {error ? <Error>Uno o más campos no tienen valor</Error>: null}
+
             <Campo>
                 <Label>Marca: </Label>
-                <Select>
+                <Select
+                    name="marca"
+                    value={marca}
+                    onChange = {onbtenerInfo}
+                >
                     <option value = "">Click para Seleccionar</option>
                     <option value = "Ford">Ford</option>
                     <option value = "Ferrari">Ferrari</option>
@@ -59,7 +119,11 @@ const Formulario = () => {
 
             <Campo>
                 <Label>Año: </Label>
-                <Select>
+                <Select
+                    name="year"
+                    value={year}
+                    onChange = {onbtenerInfo}
+                >
                     <option value = "">Click para Seleccionar</option>
                     <option value = "2021">2021</option>
                     <option value = "2020">2020</option>
@@ -80,16 +144,39 @@ const Formulario = () => {
                     type="radio"
                     name="nuevo"
                     value="Nuevo"
+                    checked= {nuevo === "Nuevo"}
+                    onChange = {onbtenerInfo}
                 /> Nuevo
 
                 <InputRadio
                     type="radio"
                     name="nuevo"
                     value="Seminuevo"
+                    checked= {nuevo === "Seminuevo"}
+                    onChange = {onbtenerInfo}
                 /> Seminuevos
             </Campo>
 
-            <Boton type= "button">Facturar</Boton>
+            <Campo>
+                <Label>Asegurado: </Label>
+                <InputRadio
+                    type="radio"
+                    name="Asegurado"
+                    value="Si"
+                    checked= {asegurado === "Si"}
+                    onChange = {onbtenerInfo}
+                /> Sí
+
+                <InputRadio
+                    type="radio"
+                    name="NoAsegurado"
+                    value="No"
+                    checked= {asegurado === "No"}
+                    onChange = {onbtenerInfo}
+                /> No
+            </Campo>
+
+            <Boton type= "submit">Facturar</Boton>
 
         </form>
     );
