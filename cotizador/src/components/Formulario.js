@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import styled from '@emotion/styled'
+import {obtenerDifYear, obtenerPrecioMarca, nuevo_Semi, aseguradoFunction} from '../helper';
 
 const Campo = styled.div `
     display: flex;
@@ -57,7 +58,7 @@ const Error = styled.div `
 
 `;
 
-const Formulario = () => {
+const Formulario = ({guardarResumen}) => {
 
     //Error
     const [error, guardarError] = useState(false);
@@ -67,14 +68,14 @@ const Formulario = () => {
         marca: '',
         year: '',
         nuevo: 'Nuevo',
-        asegurado: 'Si'
+        aseguradora: 'Si'
     });
 
     //Extraer los valores del State
-    const {marca, year, nuevo, asegurado} = datos;
+    const {marca, year, nuevo, aseguradora} = datos;
 
     //Leer los datos del Formulario y colocarlos en el State
-    const onbtenerInfo = e => {
+    const obtenerInfo = e => {
         guardarDatos({
             ...datos,
             [e.target.name] : e.target.value
@@ -85,12 +86,46 @@ const Formulario = () => {
         e.preventDefault();
         
         if(marca.trim() === '' || year.trim() === '' || 
-           nuevo.trim() === '' || asegurado.trim() === ''){
+           nuevo.trim() === '' || aseguradora.trim() === ''){
                guardarError(true);
                return;
-           }
+        }
 
-           guardarError(false);
+        guardarError(false);            
+            
+        let resultado = 100000; //cien mil precio base
+        const difYears = obtenerDifYear(year);
+        const valorMarca = obtenerPrecioMarca(marca);
+        const vehiculoNuevo = nuevo_Semi(nuevo);
+        const vehiculoAsegurado = aseguradoFunction(aseguradora);
+        
+        //Obtener la diferenci de años
+        //1.- Por cada año restar el 10%
+        
+        resultado -= ((difYears * 10) * resultado/100);
+        
+        /*2.- Ferrari, BMW, Mercedes 40%
+        Toyota, Ford 25%
+        Chevrolet 15%*/
+
+        resultado += (resultado*valorMarca)/100;
+
+
+        //3.- Nuevo Aumenta un 30% --- Seminuevo un 15%
+        resultado += (resultado*vehiculoNuevo)/100;
+                
+        //4.- Asegurado 20%
+        resultado += (resultado*vehiculoAsegurado)/100;
+
+        //5.- TotaL 
+        console.log(resultado);
+
+        //Resumen
+        guardarResumen({
+            cotizacion: resultado,
+            datos 
+
+        });
     }
 
     return(
@@ -104,7 +139,7 @@ const Formulario = () => {
                 <Select
                     name="marca"
                     value={marca}
-                    onChange = {onbtenerInfo}
+                    onChange = {obtenerInfo}
                 >
                     <option value = "">Click para Seleccionar</option>
                     <option value = "Ford">Ford</option>
@@ -122,7 +157,7 @@ const Formulario = () => {
                 <Select
                     name="year"
                     value={year}
-                    onChange = {onbtenerInfo}
+                    onChange = {obtenerInfo}
                 >
                     <option value = "">Click para Seleccionar</option>
                     <option value = "2021">2021</option>
@@ -145,7 +180,7 @@ const Formulario = () => {
                     name="nuevo"
                     value="Nuevo"
                     checked= {nuevo === "Nuevo"}
-                    onChange = {onbtenerInfo}
+                    onChange = {obtenerInfo}
                 /> Nuevo
 
                 <InputRadio
@@ -153,7 +188,7 @@ const Formulario = () => {
                     name="nuevo"
                     value="Seminuevo"
                     checked= {nuevo === "Seminuevo"}
-                    onChange = {onbtenerInfo}
+                    onChange = {obtenerInfo}
                 /> Seminuevos
             </Campo>
 
@@ -161,18 +196,18 @@ const Formulario = () => {
                 <Label>Asegurado: </Label>
                 <InputRadio
                     type="radio"
-                    name="Asegurado"
+                    name="aseguradora"
                     value="Si"
-                    checked= {asegurado === "Si"}
-                    onChange = {onbtenerInfo}
+                    checked= {aseguradora === "Si"}
+                    onChange = {obtenerInfo}
                 /> Sí
 
                 <InputRadio
                     type="radio"
-                    name="NoAsegurado"
+                    name="aseguradora"
                     value="No"
-                    checked= {asegurado === "No"}
-                    onChange = {onbtenerInfo}
+                    checked= {aseguradora === "No"}
+                    onChange = {obtenerInfo}
                 /> No
             </Campo>
 
