@@ -10,7 +10,7 @@ Solo estas herramientas se usaron para el FrontEnd
  - Hooks (*UseState*)
  - JS
  - HTML
- - CSS (*TransitionGroup / CSSTransition *)
+ - CSS (*TransitionGroup / CSSTransition*)
  - Styled Components (*@emotion/styled*)
  - Netlify 
  
