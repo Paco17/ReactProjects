@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import styled from '@emotion/styled'
 import {obtenerDifYear, obtenerPrecioMarca, nuevo_Semi, aseguradoFunction} from '../helper';
+import PropTypes from 'prop-types';
 
 const Campo = styled.div `
     display: flex;
@@ -58,7 +59,7 @@ const Error = styled.div `
 
 `;
 
-const Formulario = ({guardarResumen}) => {
+const Formulario = ({guardarResumen, guardarCargando}) => {
 
     //Error
     const [error, guardarError] = useState(false);
@@ -118,14 +119,18 @@ const Formulario = ({guardarResumen}) => {
         resultado += (resultado*vehiculoAsegurado)/100;
 
         //5.- TotaL 
-        console.log(resultado);
+        guardarCargando(true);
+        setTimeout(() => {
 
-        //Resumen
-        guardarResumen({
-            cotizacion: resultado,
-            datos 
+            //Resumen
+            guardarResumen({
+                cotizacion: Number(resultado),
+                datos 
 
-        });
+            });
+
+            guardarCargando(false);
+        }, 3000);
     }
 
     return(
@@ -215,6 +220,11 @@ const Formulario = ({guardarResumen}) => {
 
         </form>
     );
+}
+
+Formulario.propTypes = {
+    guardarResumen: PropTypes.func.isRequired,
+    guardarCargando: PropTypes.func.isRequired
 }
 
 export default Formulario;

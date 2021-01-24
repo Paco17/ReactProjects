@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from '@emotion/styled';
 import {mayuscula} from '../helper';
+import PropTypes from 'prop-types';
 
 const ContainerResumen = styled.div`
     padding: .5rem 1rem 2rem 1rem;
@@ -25,12 +26,16 @@ const Resumen = ({datos}) => {
             <h2>Resumen de Costo</h2>
             <ul>
                 <li>Marca: {mayuscula(marca)}</li>
-                <li>Año: {mayuscula(year)}</li>
+                 <li>Año: {mayuscula(year)}</li>
                 <li>Nuevo: {mayuscula(nuevo)}</li>
                 <li>Asegurado: {mayuscula(asegurador)}</li>
             </ul>   
         </ContainerResumen>
     );
+}
+
+Resumen.propTypes = {
+    datos: PropTypes.object.isRequired
 }
  
 export default Resumen;

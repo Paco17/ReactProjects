@@ -1,5 +1,6 @@
 import React from 'react';
 import Styled from '@emotion/styled';
+import PropTypes from 'prop-types';
 
 const ContenedorHeader = Styled.header`
     background: linear-gradient(to right, #e0e0e0, #cccccc); 
@@ -21,6 +22,10 @@ const Header = ({titulo}) => {
             <TextoHeader>{titulo}</TextoHeader>
         </ContenedorHeader>
     );
+}
+
+Header.propTypes = {
+    titulo: PropTypes.string.isRequired
 }
 
 export default Header;
