@@ -68,11 +68,11 @@ const Formulario = ({guardarResumen}) => {
         marca: '',
         year: '',
         nuevo: 'Nuevo',
-        aseguradora: 'Si'
+        asegurador: 'Si'
     });
 
     //Extraer los valores del State
-    const {marca, year, nuevo, aseguradora} = datos;
+    const {marca, year, nuevo, asegurador} = datos;
 
     //Leer los datos del Formulario y colocarlos en el State
     const obtenerInfo = e => {
@@ -86,7 +86,7 @@ const Formulario = ({guardarResumen}) => {
         e.preventDefault();
         
         if(marca.trim() === '' || year.trim() === '' || 
-           nuevo.trim() === '' || aseguradora.trim() === ''){
+           nuevo.trim() === '' || asegurador.trim() === ''){
                guardarError(true);
                return;
         }
@@ -97,7 +97,7 @@ const Formulario = ({guardarResumen}) => {
         const difYears = obtenerDifYear(year);
         const valorMarca = obtenerPrecioMarca(marca);
         const vehiculoNuevo = nuevo_Semi(nuevo);
-        const vehiculoAsegurado = aseguradoFunction(aseguradora);
+        const vehiculoAsegurado = aseguradoFunction(asegurador);
         
         //Obtener la diferenci de años
         //1.- Por cada año restar el 10%
@@ -196,17 +196,17 @@ const Formulario = ({guardarResumen}) => {
                 <Label>Asegurado: </Label>
                 <InputRadio
                     type="radio"
-                    name="aseguradora"
+                    name="asegurador"
                     value="Si"
-                    checked= {aseguradora === "Si"}
+                    checked= {asegurador === "Si"}
                     onChange = {obtenerInfo}
                 /> Sí
 
                 <InputRadio
                     type="radio"
-                    name="aseguradora"
+                    name="asegurador"
                     value="No"
-                    checked= {aseguradora === "No"}
+                    checked= {asegurador === "No"}
                     onChange = {obtenerInfo}
                 /> No
             </Campo>
