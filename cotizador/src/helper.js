@@ -40,3 +40,8 @@ export function aseguradoFunction(asegurado){
 
     return porcentaje;
 }
+
+//Primera Letra mayúscula
+export function mayuscula(texto){
+    return texto.charAt(0).toUpperCase() + texto.slice(1);
+}
